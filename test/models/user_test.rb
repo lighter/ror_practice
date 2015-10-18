@@ -3,7 +3,7 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   def setup
     # @user = User.new(name: "test", email: "test@test.com")
-    @user = User.new(name: "test", email: "test@test.com", password: "password", password_confirmation: "password")
+    @user = User.new(name: "test", email: "test123@test.com", password: "password", password_confirmation: "password")
   end
   
   test "should be valid" do 
@@ -57,10 +57,13 @@ class UserTest < ActiveSupport::TestCase
   end
   
   test "email addresses should be saved as lowercase" do
-    mixed_email = "TeSt@TeSt.CoM"
+    mixed_email = "TeSt123@TeSt.CoM"
     @user.email = mixed_email
     @user.save
     assert_equal mixed_email.downcase, @user.reload.email
   end
   
+  test "authenticate? should return false for a user with nil digest" do
+    assert_not @user.authenticate?('')
+  end
 end

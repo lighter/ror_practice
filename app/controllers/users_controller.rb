@@ -11,6 +11,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     
     if @user.save
+      log_in @user # 註冊同時登入
+      
       # flash message
       flash[:success] = "歡迎！"
       
