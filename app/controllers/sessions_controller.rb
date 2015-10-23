@@ -3,16 +3,16 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
+    @user = User.find_by(email: params[:session][:email].downcase)
 
-    if user && user.authenticate(params[:session][:password])
+    if @user && @user.authenticate(params[:session][:password])
       # 用戶登入
-      log_in user
+      log_in @user
 
       # 是否有勾選紀錄登入狀態
-      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
 
-      redirect_to user
+      redirect_to @user
     else
       # 登入失敗
       flash.now[:danger] = '密碼或帳號錯誤'

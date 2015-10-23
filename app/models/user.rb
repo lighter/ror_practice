@@ -16,16 +16,18 @@ class User < ActiveRecord::Base
 
     validates :password, presence: true, length: { minimum: 6 }
 
-    #指定回傳的hash
-    def User.digest(string)
-        cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
-                    #   要計算hash的字串, 決定計算hash消耗的資源
-        BCrypt::Password.create(string, cost: cost)
-    end
+    class << self
+        #指定回傳的hash
+        def digest(string)
+            cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+                        #   要計算hash的字串, 決定計算hash消耗的資源
+            BCrypt::Password.create(string, cost: cost)
+        end
 
-    #產生一個隨機token
-    def User.new_token
-       SecureRandom.urlsafe_base64 #回傳的字串長度為22
+        #產生一個隨機token
+        def new_token
+            SecureRandom.urlsafe_base64 #回傳的字串長度為22
+        end
     end
 
     #為了紀錄持續登入狀態，在資料庫中記住User
