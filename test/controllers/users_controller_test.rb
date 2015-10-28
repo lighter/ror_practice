@@ -66,4 +66,16 @@ class UsersControllerTest < ActionController::TestCase
       delete :destroy, id: @hogs
     end
   end
+  
+  # 測試不允許沒有管理者的人更新管理者權限
+  test "should not allow the admin attribute to be editted via the web" do
+    log_in_as(@hogs)
+    assert_not @hogs.admin?
+    patch :update, id: @hogs, user: { password: "test",
+                                      password_confirmation: "test",
+                                      admin: true
+                                    }
+    assert_not @hogs.admin?
+  end
+  
 end
