@@ -12,7 +12,8 @@ class SessionsController < ApplicationController
       # 是否有勾選紀錄登入狀態
       params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
 
-      redirect_to @user
+      # redirect_to @user
+      redirect_back_or @user # 判斷返回的路徑
     else
       # 登入失敗
       flash.now[:danger] = '密碼或帳號錯誤'

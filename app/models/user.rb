@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
     has_secure_password # 添加密碼驗證
 
-    validates :password, presence: true, length: { minimum: 6 }
+    validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
     class << self
         #指定回傳的hash

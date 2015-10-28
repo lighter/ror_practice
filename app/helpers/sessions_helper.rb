@@ -58,4 +58,20 @@ module SessionsHelper
         session.delete(:user_id)
         @current_user = nil
     end
+    
+    # 判斷是否與目前登入的使用者相同
+    def current_user?(user)
+        user == current_user
+    end
+    
+    # 重新轉頁的判定
+    def redirect_back_or(default)
+        redirect_to(session[:forwarding_url] || default)
+        session.delete(:forwarding_url)
+    end
+    
+    # 儲存路徑
+    def store_location
+        session[:forwarding_url] = request.url if request.get?
+    end
 end
