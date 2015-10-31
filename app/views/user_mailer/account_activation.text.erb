@@ -1,0 +1,5 @@
+你好, <%= @user.name %>
+
+歡迎你，請點選下面連結驗證帳號
+
+<%= edit_account_activation_url(@user.activation_token, email: @user.email) %>

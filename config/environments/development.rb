@@ -14,7 +14,10 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :test
+  host = 'ror-lighter.c9.io' # cloud9 可以使用你的cloud9 網址
+  config.action_mailer.default_url_options = { host: host }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
