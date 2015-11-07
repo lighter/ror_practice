@@ -40,15 +40,32 @@ class User < ActiveRecord::Base
         update_attribute(:remember_digest, User.digest(remember_token))
     end
 
-    def authenticate?(remember_token)
-        return false if remember_digest.nil?
+    # def authenticate?(remember_token)
+        # return false if remember_digest.nil?
         # 判斷 remember_digest 跟 remember_token 是否相同
-       BCrypt::Password.new(remember_digest).is_password?(remember_token)
+        # BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    # end
+    
+    def authenticate?(attribute, token)
+       digest = send("#{attribute}_digest") 
+       return false if digest.nil?
+       BCrypt::Password.new(digest).is_password?(token)
     end
 
     # 使用者登出
     def forget
        update_attribute(:remember_digest, nil)
+    end
+
+    # 驗證帳號
+    def activate
+        update_attribute(:activated, true)
+        update_attribute(:activated_at, Time.zone.now)
+    end
+    
+    # 發送驗證信
+    def send_activation_email
+       UserMailer.account_activation(self).deliver_now 
     end
     
     private

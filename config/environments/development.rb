@@ -17,6 +17,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :test
   host = 'ror-lighter.c9.io' # cloud9 可以使用你的cloud9 網址
+  host = 'localhost:3000' # 本地
   config.action_mailer.default_url_options = { host: host }
 
   # Print deprecation notices to the Rails logger.

@@ -36,7 +36,7 @@ module SessionsHelper
             user = User.find_by(id: user_id)
 
             # 取出 user 並驗證 cookie 的 remember_token
-            if user && user.authenticate?(cookies[:remember_token])
+            if user && user.authenticate?(:remember, cookies[:remember_token])
                 log_in user
                 @current_user = user
             end
