@@ -1,0 +1,6 @@
+<% if @feed_times.any? %>
+    <ol class="microposts">
+        <%= render @feed_times %>
+    </ol>
+    <%= will_paginate @feed_times %>
+<% end %>

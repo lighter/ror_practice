@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+    has_many :microposts, dependent: :destroy
+    
     # 建立一個可以訪問user.remember_token的屬性
     attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -86,6 +88,10 @@ class User < ActiveRecord::Base
     # 驗證重設密碼時間是否失效
     def password_reset_expired?
        reset_sent_at < 2.hours.ago
+    end
+    
+    def feed 
+       Micropost.where("user_id = ?", id) 
     end
 
     private

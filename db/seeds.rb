@@ -19,10 +19,18 @@ User.create!(name: "test",
    email = "example-#{n+1}@test.com"
    password = "passowrd"
    
-   User.create!(name: name,
+    User.create!(name: name,
                 email: email,
                 password: password,
                 password_confirmation: password,
                 activated: true,
                 activated_at: Time.zone.now)
+end
+
+# 只為前六個使用者新增
+# 太多使用者新增會太久
+users = User.order(:created_at).take(6)
+50.times do
+    content = Faker::Lorem.sentence(5) 
+    users.each { |user| user.microposts.create!(content: content) }
 end

@@ -4,15 +4,6 @@ class UsersController < ApplicationController
   before_action :admin_user, only: :destroy
   # 事先過濾
 
-  # 確認使用者已經登入
-  def logged_in_user
-    unless logged_in?
-      store_location
-      flash[:danger] = "請先登入"
-      redirect_to login_url
-    end
-  end
-
   # 判斷使用者是否與登入的一樣
   def correct_user
     @user = User.find(params[:id])
@@ -30,6 +21,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
     redirect_to root_url and return unless @user.activated?  
   end
 
