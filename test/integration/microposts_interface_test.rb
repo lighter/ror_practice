@@ -37,4 +37,21 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_select 'a', text: '刪除', count: 0
   end
 
+  test "micropost sidebar count" do
+    log_in_as(@user)
+    get root_path
+    assert_match '#span microposts', response.body
+    
+    # 使用者沒有發佈micropost
+    other_user = users(:laalaa)
+    log_in_as(other_user)
+    get root_path
+    assert_match "0 microposts", response.body
+    
+    other_user.microposts.create!(content: "test")
+    
+    get root_path
+    assert_match '#span microposts', response.body
+  end
+
 end
