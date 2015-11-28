@@ -16,7 +16,7 @@ hogs:
 laalaa:
     name: LaaLaa
     email: laalaa@test.com
-    password_digest: <%= User.digest('password') %>
+    password_digest: <%= User.digest('abcd1234') %>
     activated: true
     activated_at: <%= Time.zone.now %>
     
