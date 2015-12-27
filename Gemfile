@@ -4,7 +4,7 @@ gem 'bcrypt', '3.1.7'
 gem 'faker', '1.4.2'
 gem 'carrierwave', '0.10.0' # 處理圖片上傳
 gem 'mini_magick', '3.8.0' # 處理圖片尺寸
-gem 'fog', '1.23.0' # 在生產環境上傳圖片的fog
+gem 'fog', '1.32.0' # 在生產環境上傳圖片的fog
 gem 'net-ssh'
 gem 'will_paginate', '3.0.7'
 gem 'bootstrap-will_paginate', '0.0.10'

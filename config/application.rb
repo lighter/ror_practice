@@ -22,5 +22,8 @@ module Sample
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # 如果瀏覽器不支援javascript也要能正常運作
+    config.action_view.embed_authenticity_token_in_remote_forms = true
   end
 end

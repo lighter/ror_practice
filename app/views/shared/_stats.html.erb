@@ -1,0 +1,19 @@
+<%
+    # 如果 @user 是 nil 就會把目前使用者current_user
+    # 指定給 @user
+    @user ||= current_user
+%>
+<div class="stats">
+    <a href="<%= following_user_path(@user) %>">
+        <strong id="following" class="stat">
+            <%= @user.following.count %>
+        </strong>
+        追蹤
+    </a>
+    <a href="<%= followers_user_path(@user) %>">
+        <strong id="followers" class="stat">
+            <%= @user.followers.count %>
+        </strong>
+        跟隨
+    </a>
+</div>

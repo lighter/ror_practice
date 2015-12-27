@@ -1,6 +1,22 @@
 class User < ActiveRecord::Base
     has_many :microposts, dependent: :destroy
-    
+
+    # 主動關聯, 我關注的人
+    has_many :active_relationships, class_name: "Relationship",
+                                    foreign_key: "follower_id",
+                                    dependent: :destroy
+
+    # 被動關聯, 關注我的人
+    has_many :passive_relationships, class_name: "Relationship",
+                                     foreign_key: "followed_id",
+                                     dependent: :destroy
+
+    # 我的關注用戶
+    has_many :following, through: :active_relationships, source: :followed
+
+    # 關注我的人
+    has_many :followers, through: :passive_relationships, source: :follower
+
     # 建立一個可以訪問user.remember_token的屬性
     attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -89,9 +105,39 @@ class User < ActiveRecord::Base
     def password_reset_expired?
        reset_sent_at < 2.hours.ago
     end
-    
-    def feed 
-       Micropost.where("user_id = ?", id) 
+
+    def feed
+       Micropost.where("user_id = ?", id)
+    end
+
+    # 關注另一個用戶
+    def follow(other_user)
+        active_relationships.create(followed_id: other_user.id)
+    end
+
+    # 取消關注另一個用戶
+    def unfollow(other_user)
+        active_relationships.find_by(followed_id: other_user.id).destroy
+    end
+
+    # 如果當前用戶關注了指定用戶，回傳true
+    def following?(other_user)
+        following.include?(other_user)
+    end
+
+    # 用戶關注的動態
+    def feed
+        # version 1
+        # Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
+
+        # version 2
+        # Micropost.where("user_id IN (:following_ids) OR user_id = :user_id",
+        #                 following_ids: following_ids, user_id: user)
+
+        # version 3
+        following_ids = "SELECT followed_id FROM relationships
+                         WHERE follower_id = :user_id"
+        Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id)
     end
 
     private
